@@ -1,6 +1,5 @@
 package com.assignment.marshover;
 
-
 /**
  * Hover POJO class
  * 
@@ -20,14 +19,11 @@ public class Hover {
 	private int lowerLeftX = 0;
 	private int lowerLeftY = 0;
 
-	public Hover(int x, int y, String facing, int upperRightX, int upperRightY) {
+	public Hover(int x, int y, String facing) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.facing = facing;
-		this.upperRightX = upperRightX;
-		this.upperRightY = upperRightY;
-
 	}
 
 	/**
@@ -179,6 +175,54 @@ public class Hover {
 		return (this.lowerLeftX <= this.x && this.x <= upperRightX)
 				&& (this.lowerLeftY <= this.y && this.y <= upperRightY);
 
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getUpperRightX() {
+		return upperRightX;
+	}
+
+	public void setUpperRightX(int upperRightX) {
+		this.upperRightX = upperRightX;
+	}
+
+	public int getUpperRightY() {
+		return upperRightY;
+	}
+
+	public void setUpperRightY(int upperRightY) {
+		this.upperRightY = upperRightY;
+	}
+
+	public int getLowerLeftX() {
+		return lowerLeftX;
+	}
+
+	public void setLowerLeftX(int lowerLeftX) {
+		this.lowerLeftX = lowerLeftX;
+	}
+
+	public int getLowerLeftY() {
+		return lowerLeftY;
+	}
+
+	public void setLowerLeftY(int lowerLeftY) {
+		this.lowerLeftY = lowerLeftY;
 	}
 
 }
