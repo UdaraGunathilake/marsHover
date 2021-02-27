@@ -9,6 +9,12 @@ package com.assignment.marshover;
  */
 public class Hover {
 
+	private int id;
+	private int initialX;
+	private int initialY;
+	private String initialFacing;
+	private String command;
+
 	private int x;
 	private int y;
 	private String facing;
@@ -19,11 +25,18 @@ public class Hover {
 	private int lowerLeftX = 0;
 	private int lowerLeftY = 0;
 
+	private boolean succesfullyDeployed;
+	private boolean successfullyMoved;
+
 	public Hover(int x, int y, String facing) {
 		super();
 		this.x = x;
 		this.y = y;
+		this.initialX = x;
+		this.initialY = y;
 		this.facing = facing;
+		this.initialFacing = facing;
+		setSuccessfullyMoved(true);
 	}
 
 	/**
@@ -31,7 +44,7 @@ public class Hover {
 	 * 
 	 * @throws Exception
 	 */
-	public void moveForward() throws Exception {
+	public void moveForward()  {
 
 		switch (facing) {
 		case "N":
@@ -72,12 +85,12 @@ public class Hover {
 	 * 
 	 * @throws Exception
 	 */
-	private void wrongPosition() throws Exception {
-		System.out.println("Stopping the hover as wrong commands");
-		System.out.print("Hover last position : ");
-		printCurrentPosition();
-
-		throw new Exception();
+	private void wrongPosition()  {
+		// System.out.println("Stopping the hover as wrong commands");
+		// System.out.print("Hover last position : ");
+		// printCurrentPosition();
+		setSuccessfullyMoved(false);
+		// throw new Exception();
 	}
 
 	/**
@@ -95,7 +108,7 @@ public class Hover {
 		case "W":
 			this.facing = "S";
 			break;
-		case "S":
+		default:
 			this.facing = "E";
 			break;
 		}
@@ -116,7 +129,7 @@ public class Hover {
 		case "W":
 			this.facing = "N";
 			break;
-		case "S":
+		default:
 			this.facing = "W";
 			break;
 		}
@@ -127,7 +140,11 @@ public class Hover {
 	 */
 	public void printCurrentPosition() {
 
-		System.out.println(this.x + " " + this.y + " " + this.facing);
+		// System.out.println(this.x + " " + this.y + " " + this.facing);
+		System.out.println(
+				""+this.id+" Hover - initial_position: (" + this.initialX + "," + this.initialY + "," + this.initialFacing + ")| commands : "
+						+ this.command + " | success_deploy: " + isSuccesfullyDeployed() + " | success_movement: "
+						+ isSuccessfullyMoved() + " | final position : (" + this.x + "," + y + "," + this.facing + ")");
 	}
 
 	/**
@@ -136,32 +153,37 @@ public class Hover {
 	 * @param commandSequence
 	 * @throws Exception
 	 */
-	public void commands(String commandSequence) throws Exception {
+	public void commands(String commandSequence)  {
 
 		char left = 'L';
 		char right = 'R';
 		char forward = 'M';
+		this.command = commandSequence;
 
-		for (int commandNumber = 0; commandNumber < commandSequence.length(); commandNumber++) {
+		if (isSuccesfullyDeployed()) {
+			for (int commandNumber = 0; commandNumber < commandSequence.length(); commandNumber++) {
 
-			char command = commandSequence.charAt(commandNumber);
+				char command = commandSequence.charAt(commandNumber);
 
-			if (left == command) {
-				turnLeft();
-				continue;
+				if (left == command) {
+					turnLeft();
+					continue;
+				}
+				if (right == command) {
+					turnRight();
+					continue;
+				}
+				if (forward == command) {
+					moveForward();
+
+				} else {
+					System.out.println("Invalid Input command : " + command);
+					setSuccessfullyMoved(false);
+				}
+
 			}
-			if (right == command) {
-				turnRight();
-				continue;
-			}
-			if (forward == command) {
-				moveForward();
-
-			} else {
-				System.out.println("Invalid Input command : " + command);
-				throw new Exception();
-			}
-
+		}else {
+			setSuccessfullyMoved(false);
 		}
 		printCurrentPosition();
 	}
@@ -223,6 +245,36 @@ public class Hover {
 
 	public void setLowerLeftY(int lowerLeftY) {
 		this.lowerLeftY = lowerLeftY;
+	}
+
+	public boolean isSuccesfullyDeployed() {
+		return succesfullyDeployed;
+	}
+
+	public void setSuccesfullyDeployed(boolean succesfullyDeployed) {
+		if (!succesfullyDeployed) {
+			this.x = 0;
+			this.y = 0;
+			this.facing = "ND";
+
+		}
+		this.succesfullyDeployed = succesfullyDeployed;
+	}
+
+	public boolean isSuccessfullyMoved() {
+		return successfullyMoved;
+	}
+
+	public void setSuccessfullyMoved(boolean successfullyMoved) {
+		this.successfullyMoved = successfullyMoved;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

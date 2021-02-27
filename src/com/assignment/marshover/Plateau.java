@@ -18,6 +18,8 @@ public class Plateau {
 	private int lowerLeftY = 0;
 
 	private List<Hover> hovers;
+	
+	private int hoverCount=0;
 
 	public Plateau(int upperRightX, int upperRightY) {
 		super();
@@ -31,10 +33,11 @@ public class Plateau {
 
 	/**
 	 * Deploy Hovers inside the Plateau
+	 * 
 	 * @param hovers
 	 * @throws Exception
 	 */
-	public void setHovers(List<Hover> hovers) throws Exception {
+	public void setHovers(List<Hover> hovers) {
 
 		for (Hover hover : hovers) {
 
@@ -42,19 +45,29 @@ public class Plateau {
 			int y = hover.getY();
 
 			if (!isHoverPositionInsidePlateau(x, y)) {
-				System.out
-						.println("Hover position : (" + x + "," + y + ")out side the Plateau . Stopping the proccess");
-				throw new Exception();
-
+				/*
+				 * System.out .println("Hover position : (" + x + "," + y +
+				 * ")out side the Plateau . Stopping the proccess");
+				 */
+				setHover(hover, false);
+			} else {
+				setHover(hover, true);
 			}
 
-			hover.setLowerLeftX(0);
-			hover.setLowerLeftY(0);
-			hover.setUpperRightX(upperRightX);
-			hover.setUpperRightY(upperRightY);
 		}
 
 		this.hovers = hovers;
+	}
+
+	private void setHover(Hover hover, boolean deploySuccess) {
+		hoverCount++;
+		hover.setId(hoverCount);
+		hover.setLowerLeftX(0);
+		hover.setLowerLeftY(0);
+		hover.setUpperRightX(upperRightX);
+		hover.setUpperRightY(upperRightY);
+		hover.setSuccesfullyDeployed(deploySuccess);
+
 	}
 
 	/**
