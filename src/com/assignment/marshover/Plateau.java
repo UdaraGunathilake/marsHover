@@ -18,8 +18,8 @@ public class Plateau {
 	private int lowerLeftY = 0;
 
 	private List<Hover> hovers;
-	
-	private int hoverCount=0;
+
+	private int hoverCount = 0;
 
 	public Plateau(int upperRightX, int upperRightY) {
 		super();
@@ -62,8 +62,6 @@ public class Plateau {
 	private void setHover(Hover hover, boolean deploySuccess) {
 		hoverCount++;
 		hover.setId(hoverCount);
-		hover.setLowerLeftX(0);
-		hover.setLowerLeftY(0);
 		hover.setUpperRightX(upperRightX);
 		hover.setUpperRightY(upperRightY);
 		hover.setSuccesfullyDeployed(deploySuccess);

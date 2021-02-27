@@ -35,8 +35,7 @@ public class MainApplication {
 		hover1.commands("LMLMLMLMM");
 		hover2.commands("MMRMMRMRRM");
 		hover3.commands("MMRMMRMRRM");
-		System.out.println("HOVERS SUCCESSFULLY DEPLOYED AND MOVED INSIDE PLATEAU");
 
-		}
+	}
 
 }

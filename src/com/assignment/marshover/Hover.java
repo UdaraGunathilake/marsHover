@@ -22,11 +22,16 @@ public class Hover {
 	private int upperRightX;
 	private int upperRightY;
 
-	private int lowerLeftX = 0;
-	private int lowerLeftY = 0;
-
 	private boolean succesfullyDeployed;
 	private boolean successfullyMoved;
+
+	private static final int LOWER_LEFT_X = 0;
+	private static final int LOWER_LEFT_Y = 0;
+	private static final String NORTH = "N";
+	private static final String EAST = "E";
+	private static final String WEST = "W";
+	private static final String SOUTH = "S";
+	private static final String NOT_DEPLOYED = "ND";
 
 	public Hover(int x, int y, String facing) {
 		super();
@@ -44,35 +49,35 @@ public class Hover {
 	 * 
 	 * @throws Exception
 	 */
-	public void moveForward()  {
+	public void moveForward() {
 
 		switch (facing) {
-		case "N":
+		case NORTH:
 			this.y++;
 			if (!isCorrectDirection()) {
 				this.y--;
-				wrongPosition();
+				setSuccessfullyMoved(false);
 			}
 			break;
-		case "E":
+		case EAST:
 			this.x++;
 			if (!isCorrectDirection()) {
 				this.x--;
-				wrongPosition();
+				setSuccessfullyMoved(false);
 			}
 			break;
-		case "W":
+		case WEST:
 			this.x--;
 			if (!isCorrectDirection()) {
 				this.x++;
-				wrongPosition();
+				setSuccessfullyMoved(false);
 			}
 			break;
-		case "S":
+		default:
 			this.y--;
 			if (!isCorrectDirection()) {
 				this.y++;
-				wrongPosition();
+				setSuccessfullyMoved(false);
 			}
 			break;
 
@@ -81,35 +86,22 @@ public class Hover {
 	}
 
 	/**
-	 * Run when hover is moving towards wrong direction out side of the limit
-	 * 
-	 * @throws Exception
-	 */
-	private void wrongPosition()  {
-		// System.out.println("Stopping the hover as wrong commands");
-		// System.out.print("Hover last position : ");
-		// printCurrentPosition();
-		setSuccessfullyMoved(false);
-		// throw new Exception();
-	}
-
-	/**
 	 * Turn hover left from current facing direction
 	 */
 	public void turnLeft() {
 
 		switch (facing) {
-		case "N":
-			this.facing = "W";
+		case NORTH:
+			this.facing = WEST;
 			break;
-		case "E":
-			this.facing = "N";
+		case EAST:
+			this.facing = NORTH;
 			break;
-		case "W":
-			this.facing = "S";
+		case WEST:
+			this.facing = SOUTH;
 			break;
 		default:
-			this.facing = "E";
+			this.facing = EAST;
 			break;
 		}
 	}
@@ -120,17 +112,17 @@ public class Hover {
 	public void turnRight() {
 
 		switch (facing) {
-		case "N":
-			this.facing = "E";
+		case NORTH:
+			this.facing = EAST;
 			break;
-		case "E":
-			this.facing = "S";
+		case EAST:
+			this.facing = SOUTH;
 			break;
-		case "W":
-			this.facing = "N";
+		case WEST:
+			this.facing = NORTH;
 			break;
 		default:
-			this.facing = "W";
+			this.facing = WEST;
 			break;
 		}
 	}
@@ -140,11 +132,9 @@ public class Hover {
 	 */
 	public void printCurrentPosition() {
 
-		// System.out.println(this.x + " " + this.y + " " + this.facing);
-		System.out.println(
-				""+this.id+" Hover - initial_position: (" + this.initialX + "," + this.initialY + "," + this.initialFacing + ")| commands : "
-						+ this.command + " | success_deploy: " + isSuccesfullyDeployed() + " | success_movement: "
-						+ isSuccessfullyMoved() + " | final position : (" + this.x + "," + y + "," + this.facing + ")");
+		System.out.println("" + this.id + " Hover - (" + this.initialX + "," + this.initialY + "," + this.initialFacing
+				+ "), " + this.command + " | success_deploy: " + isSuccesfullyDeployed() + " | success_movement: "
+				+ isSuccessfullyMoved() + " | final position : (" + this.x + "," + y + "," + this.facing + ")");
 	}
 
 	/**
@@ -153,7 +143,7 @@ public class Hover {
 	 * @param commandSequence
 	 * @throws Exception
 	 */
-	public void commands(String commandSequence)  {
+	public void commands(String commandSequence) {
 
 		char left = 'L';
 		char right = 'R';
@@ -182,7 +172,7 @@ public class Hover {
 				}
 
 			}
-		}else {
+		} else {
 			setSuccessfullyMoved(false);
 		}
 		printCurrentPosition();
@@ -194,8 +184,7 @@ public class Hover {
 	 * @return
 	 */
 	private boolean isCorrectDirection() {
-		return (this.lowerLeftX <= this.x && this.x <= upperRightX)
-				&& (this.lowerLeftY <= this.y && this.y <= upperRightY);
+		return (LOWER_LEFT_X <= this.x && this.x <= upperRightX) && (LOWER_LEFT_Y <= this.y && this.y <= upperRightY);
 
 	}
 
@@ -232,19 +221,11 @@ public class Hover {
 	}
 
 	public int getLowerLeftX() {
-		return lowerLeftX;
-	}
-
-	public void setLowerLeftX(int lowerLeftX) {
-		this.lowerLeftX = lowerLeftX;
+		return LOWER_LEFT_X;
 	}
 
 	public int getLowerLeftY() {
-		return lowerLeftY;
-	}
-
-	public void setLowerLeftY(int lowerLeftY) {
-		this.lowerLeftY = lowerLeftY;
+		return LOWER_LEFT_Y;
 	}
 
 	public boolean isSuccesfullyDeployed() {
@@ -255,7 +236,7 @@ public class Hover {
 		if (!succesfullyDeployed) {
 			this.x = 0;
 			this.y = 0;
-			this.facing = "ND";
+			this.facing = NOT_DEPLOYED;
 
 		}
 		this.succesfullyDeployed = succesfullyDeployed;
